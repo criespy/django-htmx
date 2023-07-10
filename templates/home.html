@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <script src="https://unpkg.com/htmx.org@1.9.2" integrity="sha384-L6OqL9pRWyyFU3+/bjdSri+iIphTN/bvYyM37tICVyOJkWZLpP2vGn6VUEXgzg6h" crossorigin="anonymous"></script>
+</head>
+<body>
+    <h1>OK</h1>
+    <div id="parent-div" hx-poll="2000" hx-get="/clicked" hx-swap="innerHTML">
+        Disini akan diload data
+    </div>
+    <script>
+        function gettimestamp(){
+            var timestamp = new Date().getTime();
+            console.log(timestamp);
+            return timestamp;
+        }      
+
+        setInterval(function() {
+            fetch('/clicked')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('parent-div').innerHTML = data;
+                })
+                .catch(error => {
+                    console.log('Error:', error);
+                });
+        }, 2000); // 1 minute in milliseconds
+    </script>
+    <!--button onclick="gettimestamp()" hx-get="/clicked/timestamp=" + timestamp
+        hx-trigger="click"
+        hx-target="#parent-div"
+        hx-swap="innerHTML">
+        Click Me!
+    </button-->
+
+</body>
+</html>
